@@ -6,9 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title SchoolCertificate
- * @dev A Soul-Bound Token (SBT) contract for issuing school achievement certificates.
- * This contract allows the owner (school) to issue certificates to students,
- * which cannot be transferred or approved for transfer.
+ * @dev An ERC721-based Soul-Bound Token (SBT) for issuing non-transferable student certificates.
  */
 contract SchoolCertificate is ERC721, Ownable {
     uint256 private _nextTokenId;
@@ -20,6 +18,10 @@ contract SchoolCertificate is ERC721, Ownable {
         Ownable(initialOwner)
     {}
 
+    /**
+     * @dev Mints a new certificate and assigns it to a student.
+     * Can only be called by the contract owner.
+     */
     function issueCertificate(address student, string memory tokenURI_) public onlyOwner {
         uint256 tokenId = ++_nextTokenId;
         _safeMint(student, tokenId);
@@ -27,16 +29,23 @@ contract SchoolCertificate is ERC721, Ownable {
         _studentCertificates[student].push(tokenId);
     }
 
+    /**
+     * @dev Returns the URI for a given token ID.
+     */
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        ownerOf(tokenId);
+        ownerOf(tokenId); // Reverts if token does not exist
         return _tokenURIs[tokenId];
     }
 
+    /**
+     * @dev Returns an array of all certificate IDs owned by a student.
+     */
     function getCertificatesByStudent(address student) public view returns (uint256[] memory) {
         return _studentCertificates[student];
     }
     
-    // --- ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ: Используем require(false, ...) ---
+    // --- SBT Implementation: Disable all transfer and approval functions ---
+
     function transferFrom(address, address, uint256) public virtual override {
         require(false, "SchoolCertificate: This is a Soul-Bound Token and cannot be transferred.");
     }
