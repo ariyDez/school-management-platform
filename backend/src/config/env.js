@@ -18,6 +18,11 @@ const env = {
   API_URL: process.env.API_URL,
   COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
+  PINATA_API_KEY: process.env.PINATA_API_KEY,
+  PINATA_SECRET_KEY: process.env.PINATA_SECRET_KEY,
+  RPC_PROVIDER_URL: process.env.RPC_PROVIDER_URL,
+  OWNER_PRIVATE_KEY: process.env.OWNER_PRIVATE_KEY,
+  CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
 };
 
 module.exports = { env };

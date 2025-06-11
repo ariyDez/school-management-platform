@@ -174,6 +174,16 @@ CREATE TABLE user_leave_policy (
     UNIQUE (user_id, leave_policy_id)
 );
 
+CREATE TABLE certificates (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    token_id INTEGER NOT NULL,
+    ipfs_uri VARCHAR(255) NOT NULL,
+    transaction_hash VARCHAR(255) NOT NULL UNIQUE,
+    issued_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students (id)
+);
+
 
 -- functions
 DROP FUNCTION IF EXISTS staff_add_update(JSONB);
